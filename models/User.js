@@ -13,8 +13,37 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    email:{
+      type:String,
+      required:true,
+      unique: true,
+    },
+
+    role:{
+      enum:["seeker","employer"],
+      require:true,
+    },
+
+    skills:[{
+      type:String,
+      enum:skillsList
+    }],
+
+    bio: {
+        type: String,
+        default: ''
+    },
+   location:{
+    type:String,
+    default:'Bahrain'
+   },
+   profileComplete:{
+    type:Boolean,
+    default:false
+   },
   },
   { timestamps: true }
+  
 );
 
 userSchema.set('toJSON', {
