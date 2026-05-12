@@ -16,13 +16,14 @@ const userSchema = new mongoose.Schema(
     },
     email:{
       type:String,
-      required:true,
+      required: true,
       unique: true,
     },
 
     role:{
-      enum:["seeker","employer"],
-      require:true,
+      type: String,
+      enum: ["seeker","employer"],
+      required: true,
     },
 
     skills:[{

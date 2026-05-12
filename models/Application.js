@@ -30,7 +30,7 @@ const applicationSchema = new mongoose.Schema({
     status:{
         type:String,
         enum:['Applied','Reviewing','Accepted','Rejected'],
-        default:'applied'
+        default:'Applied'
     },
 
     appliedAt:{
@@ -42,4 +42,4 @@ const applicationSchema = new mongoose.Schema({
 ,{timestamps:true}
 )
 
-module.exports = mongoose.model('Application','applicationSchema');
+module.exports = mongoose.model('Application',applicationSchema);
