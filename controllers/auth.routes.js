@@ -27,6 +27,8 @@ router.post('/sign-up', async (req,res)=>{
     // 2. save the user in the Database with the encrypted password
     const createdUser = await User.create({
         username: req.body.username,
+        email: req.body.email,
+        role: req.body.role,
         hashedPassword: bcrypt.hashSync(req.body.password,12)
     })
 
