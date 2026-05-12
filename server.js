@@ -8,7 +8,8 @@ const logger = require('morgan');
 const authRouter = require('./controllers/auth.routes');
 const verifyToken = require('./middleware/verify-token');
 const jobRouter = require('./controllers/job.routes');
-const applicationRouter = require('./controllers/application.routes');  
+const applicationRouter = require('./controllers/application.routes');
+const userRouter = require('./controllers/user.routes');
 
 
 mongoose.connect(process.env.MONGODB_URI);
@@ -25,6 +26,7 @@ app.use(logger('dev'));
 app.use('/auth', authRouter);
 app.use('/jobs', jobRouter);
 app.use('/applications', applicationRouter);
+app.use('/users', userRouter);
 
 
 app.listen(3000, () => {
