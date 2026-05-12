@@ -7,6 +7,8 @@ const cors = require('cors');
 const logger = require('morgan');
 const authRouter = require('./controllers/auth.routes');
 const verifyToken = require('./middleware/verify-token');
+const jobRouter = require('./controllers/job.routes');
+const applicationRouter = require('./controllers/application.routes');  
 
 
 mongoose.connect(process.env.MONGODB_URI);
@@ -21,6 +23,8 @@ app.use(logger('dev'));
 
 // Routes go here
 app.use('/auth', authRouter);
+app.use('/jobs', jobRouter);
+app.use('/applications', applicationRouter);
 
 
 app.listen(3000, () => {
