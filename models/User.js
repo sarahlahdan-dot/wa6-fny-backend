@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const skillsList = require('../constants/skills');
 
 const userSchema = new mongoose.Schema(
   {
