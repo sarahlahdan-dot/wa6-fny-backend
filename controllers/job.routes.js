@@ -1,7 +1,9 @@
 const router = require('express').Router()
 const Job = require('../models/Job');
+const User = require('../models/User');
 const verifyToken = require('../middleware/verify-token');
 const Application = require('../models/Application');
+const calculateMatch = require('../utils/matchScore');
 
 
 // Get all jobs
@@ -42,13 +44,13 @@ router.post('/', verifyToken, async (req, res) => {
 })
 
 //GET A JOB BY ID
-router.get(':/id', verifyToken, async(req, res)=>{
+router.get('/:id', verifyToken, async(req, res)=>{
     try{
         const getJob = await Job.findById(req.params.id).populate('postedBy','username')
         if (!getJob) return res.status(404).json({ err: 'Job not found'})
          
         const user = await User.findById(req.user._id)
-        const { matchScore, matchedSkills, matchedSkills} = calculateMatch(user, getJob)
+        const { matchScore, matchedSkills, missingSkills} = calculateMatch(user, getJob)
         
         const applyAlready = await Application.findOne({
             job: req.params.id,
@@ -62,5 +64,23 @@ router.get(':/id', verifyToken, async(req, res)=>{
         res.status(500).json(err)
     }
 })
+
+// DELETE A JOB
+router.delete('/:id', verifyToken, async(req, res)=>{
+    try{
+        const getJob = await Job.findById(req.params.id)
+        if (!getJob) return res.status(404).json({ err:'Unauthorized to delete this job'})
+        if (!foundJob.postedBy.equals(req.user._id)) {
+      return res.status(403).json({ err: 'Unauthorized to delete this job' })
+    }
+
+    await Application.deleteMany({ job: req.params.id })
+    await Job.findByIdAndDelete(req.params.id)
+    res.json({ message: 'Job deleted' })
+  
+    }
+    catch{}
+})
+
 
 module.exports = router;
