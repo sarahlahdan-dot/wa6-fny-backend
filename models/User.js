@@ -32,9 +32,9 @@ const userSchema = new mongoose.Schema(
     }],
 
     bio: {
-        type: String,
-        default: ''
-    },
+      type: String,
+      default: ''
+    },
    location:{
     type:String,
     default:'Bahrain'
