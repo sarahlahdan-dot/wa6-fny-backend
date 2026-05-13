@@ -2,7 +2,7 @@ const router = require('express').Router()
 const User = require('../models/User')
 const verifyToken = require('../middleware/verify-token')
 
-// GET /api/users/profile — get your own profile
+// GET /users/profile — get your own profile
 router.get('/profile', verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.user._id)
@@ -13,7 +13,7 @@ router.get('/profile', verifyToken, async (req, res) => {
   }
 })
 
-// PUT /api/users/profile — update profile
+// PUT /users/profile — update profile
 router.put('/profile', verifyToken, async (req, res) => {
   try {
     if (req.user.role === 'seeker' && req.body.skills?.length > 0) {
