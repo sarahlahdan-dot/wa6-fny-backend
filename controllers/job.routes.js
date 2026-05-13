@@ -70,7 +70,7 @@ router.delete('/:id', verifyToken, async(req, res)=>{
     try{
         const getJob = await Job.findById(req.params.id)
         if (!getJob) return res.status(404).json({ err:'Unauthorized to delete this job'})
-        if (!foundJob.postedBy.equals(req.user._id)) {
+        if (!getJob.postedBy.equals(req.user._id)) {
       return res.status(403).json({ err: 'Unauthorized to delete this job' })
     }
 
@@ -79,7 +79,10 @@ router.delete('/:id', verifyToken, async(req, res)=>{
     res.json({ message: 'Job deleted' })
   
     }
-    catch{}
+     catch(err){
+        console.log(err)
+        res.status(500).json(err)
+    }
 })
 
 
