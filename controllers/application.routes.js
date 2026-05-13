@@ -6,7 +6,7 @@ const verifyToken = require('../middleware/verify-token')
 const calculateMatch = require('../utils/matchScore')
 
 
-// POST /applications/:id/apply — seeker applies to a job
+// POST /applications/:id/apply — seeker applies to a job - it creates a application
 
 router.post('/:id/apply', verifyToken, async (req, res) => {
   try {
