@@ -85,5 +85,26 @@ router.delete('/:id', verifyToken, async(req, res)=>{
     }
 })
 
+// GET applicants for a job — employer only, ranked by match score
+router.get('/:id/applicants', verifyToken, async (req, res) => {
+  try {
+    const foundJob = await Job.findById(req.params.id)
+    if (!foundJob) return res.status(404).json({ err: 'Job not found' })
+
+    if (!foundJob.postedBy.equals(req.user._id)) {
+      return res.status(403).json({ err: 'Unauthorized' })
+    }
+
+    const applications = await Application.find({ job: req.params.id })
+      .populate('applicant', 'username bio skills location')
+      .sort({ matchScore: -1 })
+
+    res.json(applications)
+  } catch (err) {
+    console.log(err)
+    res.status(500).json(err)
+  }
+})
+
 
 module.exports = router;
