@@ -39,6 +39,10 @@ const userSchema = new mongoose.Schema(
     type:String,
     default:'Bahrain'
    },
+   company: {
+    type: String,
+    default: ''
+  },
    profileComplete:{
     type:Boolean,
     default:false
