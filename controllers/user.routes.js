@@ -19,6 +19,10 @@ router.put('/profile', verifyToken, async (req, res) => {
     if (req.user.role === 'seeker' && req.body.skills?.length > 0) {
       req.body.profileComplete = true
     }
+    if (req.user.role === 'employer') {
+      req.body.profileComplete = true
+    }
+
 
     const updatedUser = await User.findByIdAndUpdate(
       req.user._id, 
