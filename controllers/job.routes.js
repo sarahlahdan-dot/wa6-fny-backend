@@ -15,7 +15,17 @@ router.get('/', verifyToken, async (req, res) => {
                 select: 'title company'
             });
 
-        res.status(200).json({ jobs: allJobs });
+    // calculate match score and related metadata per job for the requesting user
+    const user = await User.findById(req.user._id)
+
+    const jobsWithMatch = []
+    for (const job of allJobs) {
+      const { matchScore, matchedSkills, missingSkills } = calculateMatch(user, job)
+      const applyAlready = await Application.findOne({ job: job._id, applicant: req.user._id })
+      jobsWithMatch.push({ ...job.toObject(), matchScore, matchedSkills, missingSkills, applyAlready: !!applyAlready })
+    }
+
+    res.status(200).json({ jobs: jobsWithMatch });
     } catch (error) {
         res.status(500).json({ message: error.message || 'Failed to fetch jobs' });
     }
