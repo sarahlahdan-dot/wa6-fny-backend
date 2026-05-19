@@ -22,7 +22,6 @@ const skillsByCategory = {
   ]
 };
 
+const skillsList = Object.values(skillsByCategory).flat();
 
 module.exports = skillsList;
-
-module.exports = skillsByCategory;
