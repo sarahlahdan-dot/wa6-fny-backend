@@ -42,6 +42,8 @@ router.post('/', verifyToken, async (req, res) => {
     }
 
      req.body.postedBy = req.user._id
+     const employer = await User.findById(req.user._id)
+     req.body.company = employer.company
 
     const createJob = await Job.create(req.body)
     res.status(201).json(createJob)
@@ -73,6 +75,23 @@ router.get('/:id', verifyToken, async(req, res)=>{
         console.log(err)
         res.status(500).json(err)
     }
+})
+// PUT edit a job — only the employer who posted it
+router.put('/:id', verifyToken, async (req, res) => {
+  try {
+    const foundJob = await Job.findById(req.params.id)
+    if (!foundJob) return res.status(404).json({ err: 'Job not found' })
+
+    if (!foundJob.postedBy.equals(req.user._id)) {
+      return res.status(403).json({ err: 'Unauthorized to edit this job' })
+    }
+
+    const updatedJob = await Job.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    res.json(updatedJob)
+  } catch (err) {
+    console.log(err)
+    res.status(500).json(err)
+  }
 })
 
 // DELETE A JOB
